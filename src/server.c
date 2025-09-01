@@ -11,24 +11,34 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "minitalk.h"
 #include <unistd.h>
 #include <signal.h>
 
-void sig_handler(int signal)
+void sig_handler(int signal, siginfo_t *info, void *context)
 {
-	static char	c = 0;
-	static int	i = 0;
+	static t_msg	*list = NULL;
+	t_cl		*clt;
 
-	c <<= 1;
-	if (signal == SIGUSR1)
-		c |= 1;
-
-	i++;
-	if (i == 8)
+	if (!list)
+		creat_cl(info.si_pid);
+	while (clt)
 	{
-		write(1, &c, 1);
-		i = 0;
-		c = 0;
+		if (clt->pid != info->si_pid)
+			clt = clt->next;
+		else
+			break ;
+	}
+	clt <<= 1;
+	if (signal == SIGUSR1)
+		clt |= 1;
+
+	clt->bits++;
+	if (clt->bits == 8)
+	{
+		ft_strlcat(clt->msg, &c, 1);
+		clt->bits = 0;
+		clt->c = 0;
 	}
 }
 

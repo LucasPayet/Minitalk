@@ -1,46 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/26 12:07:33 by lupayet           #+#    #+#             */
-/*   Updated: 2025/08/26 14:18:58 by lupayet          ###   ########.fr       */
+/*   Created: 2025/08/26 12:07:17 by lupayet           #+#    #+#             */
+/*   Updated: 2025/08/26 14:37:42 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
-#include <signal.h>
+#ifndef MINITALK_H
+# define MINITALK_H
 
-void	translator(int pid, char c)
+typedef struct	s_client
 {
-	int	i;
+	int		pid;
+	char		c;
+	int		bits;
+	char		*text;
+	struct s_client	*next;
+}	t_cl;
 
-	i = 7;
-	while (i >= 0)
-	{
-		if ((c >> i) & 1)
-			kill(pid, SIGUSR1);
-		else
-			kill(pid, SIGUSR2);
-		i--;
-		pause();
-	}
-
-}
-
-int	main(int ac, char *av[])
-{
-	int	i;
-
-	if (ac < 3)
-		return (1);
-	i = 0;
-	while (av[2][i])
-	{
-		translator(ft_atoi(av[1]), av[2][i]);
-		i++;
-	}
-}
+#endif
