@@ -6,7 +6,7 @@
 #    By: lupayet <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/26 12:05:15 by lupayet           #+#    #+#              #
-#    Updated: 2025/08/26 12:55:00 by lupayet          ###   ########.fr        #
+#    Updated: 2025/09/01 14:00:44 by lupayet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ $(LIBFT):
 
 $(NAME): $(LIBFT) $(OBJ)
 	@echo "\nCOMPILING $(NAME)\n"
-	$(CC) $(CFLAGS) ./src/server.c -I$(LIBFT_P) $(LIBFT_P)libft.a -g -o server
+	$(CC) $(CFLAGS) ./src/server.c ./src/utils.c -I$(INC_DIR) -I$(LIBFT_P) $(LIBFT_P)libft.a -g -o server
 	$(CC) $(CFLAGS) ./src/client.c -I$(LIBFT_P) $(LIBFT_P)libft.a -g -o client
 	@echo "> $(NAME) READY"
 
