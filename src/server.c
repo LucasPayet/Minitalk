@@ -15,28 +15,10 @@
 #include <unistd.h>
 #include <signal.h>
 
-void	sig_handler(int signal, siginfo_t *info, void *context)
-{
-	static t_cl	*list = NULL;
-	t_cl		*clt;
+t_cl	*list;
 
-	(void)context;
-	if (!list)
-		list = new_clt(info->si_pid);
-	clt = list;
-	while (clt)
-	{
-		if (clt->pid != info->si_pid)
-			clt = clt->next;
-		else if (!clt->next)
-		{
-			clt->next = new_clt(info->si_pid);
-			clt = clt->next;
-			break ;
-		}
-		else
-			break ;
-	}
+void	set_bit(int signal, t_cl *clt)
+{
 	clt->c <<= 1;
 	if (signal == SIGUSR1)
 		clt->c |= 1;
@@ -50,22 +32,69 @@ void	sig_handler(int signal, siginfo_t *info, void *context)
 		clt->bits = 0;
 		clt->c = 0;
 	}
-	kill(info->si_pid, SIGUSR1);
+	kill(clt->pid, SIGUSR1);
+}
+
+void	sig_handler(int signal, siginfo_t *info, void *context)
+{
+	t_cl		*clt;
+
+	(void)context;
+	if (!list)
+		list = new_clt(info->si_pid);
+	clt = list;
+	while (clt)
+	{
+		if (clt->pid != info->si_pid)
+		{
+			if (clt->next)
+				clt = clt->next;
+			else
+			{
+				clt->next = new_clt(info->si_pid);
+				clt = clt->next;
+				break ;
+			}
+		}
+		else
+			break ;
+	}
+	set_bit(signal, clt);
+}
+
+void	quit(int signal)
+{
+	(void)signal;
+	t_cl	*i;
+	while (list)
+	{
+		i = list->next;
+		free(list->msg);
+		free(list);
+		list = i;
+	}
+	exit(0);
 }
 
 void	set_signal_action(void)
 {
 	struct sigaction	act;
+	struct sigaction	qt;
 
 	act.sa_flags = SA_SIGINFO;
 	act.sa_sigaction = &sig_handler;
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
+	qt.sa_handler = &quit;
+	sigemptyset(&qt.sa_mask);
+	qt.sa_flags = 0;
+	sigaction(SIGINT, &qt, NULL);
+	sigaction(SIGTERM, &qt, NULL);
 }
 
 int	main(void)
 {
-	int					pid;
+	int	pid;
 
 	pid = getpid();
 	ft_printf("%d\n", pid);

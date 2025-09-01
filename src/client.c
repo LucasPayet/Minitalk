@@ -45,7 +45,8 @@ void	translator(int pid, char c)
 		else
 			kill(pid, SIGUSR2);
 		i--;
-		while (p);
+		while (p)
+			pause();
 	}
 }
 

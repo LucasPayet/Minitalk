@@ -20,6 +20,7 @@ t_cl	*new_clt(pid_t pid)
 	new = ft_calloc(sizeof(t_cl), 1);
 	new->pid = pid;
 	new->msg = ft_calloc(sizeof(char), 100);
+	new->size = 100;
 	return (new);
 }
 
@@ -29,17 +30,20 @@ void	*ft_realloc(void *ptr, size_t new_size, int size)
 	cp = ft_calloc(sizeof(char), new_size);
 	if (!cp)
 		return (NULL);
-	if (ft_memcpy(cp, ptr, size))
-	{
-		free(ptr);
-		ptr = cp;
-	}
-	else
-	{
-		free(cp);
-		return (NULL);
-	}
+	ft_memcpy(cp, ptr, size);
+	free(ptr);
+	ptr = cp;
 	return (ptr);
+}
+
+int	strccat(char *dst, const char c)
+{
+	int	len_dest;
+
+	len_dest = ft_strlen(dst);
+	dst[len_dest + 1] = c;
+	dst[len_dest + 2] = '\0';
+	return (len_dest + 1);
 }
 
 int	msg_cat(t_cl *clt)
@@ -48,8 +52,12 @@ int	msg_cat(t_cl *clt)
 
 	len = ft_strlen(clt->msg);
 	if (len >= clt->size - 1)
+	{
 		if (!ft_realloc(clt->msg, clt->size + 100, clt->size))
 			return (0);
-	ft_strlcat(clt->msg, &clt->c, 1);
+		else
+			clt->size += 100;
+	}
+	strccat(clt->msg, clt->c);
 	return (1);
 }
