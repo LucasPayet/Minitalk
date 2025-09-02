@@ -6,11 +6,11 @@
 #    By: lupayet <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/26 12:05:15 by lupayet           #+#    #+#              #
-#    Updated: 2025/09/01 14:00:44 by lupayet          ###   ########.fr        #
+#    Updated: 2025/09/02 13:57:38 by lupayet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-#.SILEN  T:
+#.SILENT:
 
 NAME = minitalk
 
@@ -20,42 +20,43 @@ CLIENT = client
 CC	= cc
 CFLAGS	= -Wall -Wextra -Werror -g
 RM = rm -f
+INC_DIR = ./inc
 SRC_DIR = ./src/
 OBJ_DIR = ./obj/
-INC_DIR = ./inc
 LIBFT_P = ./libft/
 LIBFT = $(LIBFT_P)libft.a
+S_SRC = server.c utils.c clt_utils.c
+C_SRC = client.c
 
-#SRC	= server.c
+C_OBJ	= $(addprefix $(OBJ_DIR), $(C_SRC:.c=.o))
+S_OBJ	= $(addprefix $(OBJ_DIR), $(S_SRC:.c=.o))
 
-#OBJ	= $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
-
-#$(OBJ_DIR)%.o: $(SRC_DIR)%.c
-#	$(CC) -Wall -Wextra -Werror -I$(LIBFT_P) -I$(INC_DIR) -g -c $< -o $@
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@$(CC) $(CFLAGS) -I$(LIBFT_P) -I$(INC_DIR) -c $< -o $@
 
 all: $(NAME)
 
 $(LIBFT):
-	@echo "\nCOMPILING LIBFT..."
+	@echo "COMPILING LIBFT..."
 	@make -C $(LIBFT_P) 1>/dev/null
-	@echo "> LIBFT CREATED"
+	@echo "> LIBFT CREATED\n"
 
-$(SERVER): ./src/server.c ./src/utils.c
-	@echo "\nCOMPILING SERVER..."
-	@$(CC) $(CFLAGS) ./src/server.c ./src/utils.c -I$(INC_DIR) -I$(LIBFT_P) $(LIBFT_P)libft.a -g -o server
-	@echo "> SERVER CREATED"
+$(SERVER): $(S_OBJ)
+	@echo "COMPILING SERVER..."
+	@$(CC) $(CFLAGS) $(S_OBJ) -I$(INC_DIR) -I$(LIBFT_P) $(LIBFT) -g -o server
+	@echo "> SERVER CREATED\n"
 
-$(CLIENT): ./src/client.c
-	@echo "\nCOMPILING CLIENT..."
-	@$(CC) $(CFLAGS) ./src/client.c -I$(LIBFT_P) $(LIBFT_P)libft.a -g -o client
-	@echo "> CLIENT CREATED"
+$(CLIENT): $(C_OBJ)
+	@echo "COMPILING CLIENT..."
+	@$(CC) $(CFLAGS) $(C_OBJ) -I$(LIBFT_P) $(LIBFT) -g -o client
+	@echo "> CLIENT CREATED\n"
 
 $(NAME): $(LIBFT) $(CLIENT) $(SERVER)
-	@echo "\n> $(NAME) READY"
+	@echo "> $(NAME) READY"
 
 clean:
 	@make clean -C $(LIBFT_P) 1>/dev/null
-	@rm -f $(OBJ)
+	@rm -f $(C_OBJ) $(S_OBJ)
 
 fclean: clean
 	@make fclean -C $(LIBFT_P) 1>/dev/null

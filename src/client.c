@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:07:33 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/01 15:23:55 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/02 10:42:03 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include <stdlib.h>
 #include <signal.h>
 
-int	p;
+int	g_pause;
 
-void	update_stop(int	signal)
+void	update_stop(int signal)
 {
 	(void)signal;
-	p = 0;
+	g_pause = 0;
 }
 
 void	set_signal_action(void)
@@ -39,13 +39,13 @@ void	translator(int pid, char c)
 	i = 7;
 	while (i >= 0)
 	{
-		p = 1;
+		g_pause = 1;
 		if ((c >> i) & 1)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
 		i--;
-		while (p)
+		while (g_pause)
 			pause();
 	}
 }

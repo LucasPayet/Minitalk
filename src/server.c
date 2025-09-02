@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:07:17 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/01 15:22:32 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:11:38 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <signal.h>
 
-t_cl	*list;
+t_cl	*g_list;
 
 void	set_bit(int signal, t_cl *clt)
 {
@@ -28,7 +28,12 @@ void	set_bit(int signal, t_cl *clt)
 		write(1, &clt->c, 1);
 		msg_cat(clt);
 		if (clt->c == 0)
+		{
 			write(1, clt->msg, ft_strlen(clt->msg));
+			kill(clt->pid, SIGUSR1);
+			rm_clt(&g_list, clt->pid);
+			return ;
+		}
 		clt->bits = 0;
 		clt->c = 0;
 	}
@@ -39,10 +44,11 @@ void	sig_handler(int signal, siginfo_t *info, void *context)
 {
 	t_cl		*clt;
 
+	ft_printf("\n>>>>> %d <<<<<", info->si_pid);
 	(void)context;
-	if (!list)
-		list = new_clt(info->si_pid);
-	clt = list;
+	if (!g_list)
+		g_list = new_clt(info->si_pid);
+	clt = g_list;
 	while (clt)
 	{
 		if (clt->pid != info->si_pid)
@@ -64,14 +70,15 @@ void	sig_handler(int signal, siginfo_t *info, void *context)
 
 void	quit(int signal)
 {
-	(void)signal;
 	t_cl	*i;
-	while (list)
+
+	(void)signal;
+	while (g_list)
 	{
-		i = list->next;
-		free(list->msg);
-		free(list);
-		list = i;
+		i = g_list->next;
+		free(g_list->msg);
+		free(g_list);
+		g_list = i;
 	}
 	exit(0);
 }
@@ -81,6 +88,7 @@ void	set_signal_action(void)
 	struct sigaction	act;
 	struct sigaction	qt;
 
+	sigemptyset(&act.sa_mask);
 	act.sa_flags = SA_SIGINFO;
 	act.sa_sigaction = &sig_handler;
 	sigaction(SIGUSR1, &act, NULL);

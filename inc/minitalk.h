@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:07:17 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/01 14:09:34 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/02 11:44:57 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_client
 }	t_cl;
 
 t_cl	*new_clt(pid_t pid);
+void	rm_clt(t_cl **head, int pid);
 int		msg_cat(t_cl *clt);
 
 #endif
