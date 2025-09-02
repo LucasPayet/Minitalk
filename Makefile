@@ -6,7 +6,7 @@
 #    By: lupayet <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/26 12:05:15 by lupayet           #+#    #+#              #
-#    Updated: 2025/09/02 13:57:38 by lupayet          ###   ########.fr        #
+#    Updated: 2025/09/02 17:02:07 by lupayet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ LIBFT = $(LIBFT_P)libft.a
 S_SRC = server.c utils.c clt_utils.c
 C_SRC = client.c
 
+
 C_OBJ	= $(addprefix $(OBJ_DIR), $(C_SRC:.c=.o))
 S_OBJ	= $(addprefix $(OBJ_DIR), $(S_SRC:.c=.o))
 
@@ -35,6 +36,9 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@$(CC) $(CFLAGS) -I$(LIBFT_P) -I$(INC_DIR) -c $< -o $@
 
 all: $(NAME)
+
+$(OBJ_DIR):
+	@mkdir obj
 
 $(LIBFT):
 	@echo "COMPILING LIBFT..."
@@ -51,7 +55,7 @@ $(CLIENT): $(C_OBJ)
 	@$(CC) $(CFLAGS) $(C_OBJ) -I$(LIBFT_P) $(LIBFT) -g -o client
 	@echo "> CLIENT CREATED\n"
 
-$(NAME): $(LIBFT) $(CLIENT) $(SERVER)
+$(NAME): $(OBJ_DIR) $(LIBFT) $(CLIENT) $(SERVER)
 	@echo "> $(NAME) READY"
 
 clean:
