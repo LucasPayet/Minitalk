@@ -25,12 +25,14 @@ void	set_bit(int signal, t_cl *clt)
 	clt->bits++;
 	if (clt->bits == 8)
 	{
-		write(1, &clt->c, 1);
 		msg_cat(clt);
 		if (clt->c == 0)
 		{
 			write(1, clt->msg, ft_strlen(clt->msg));
+			write(1, "\n", 1);
 			kill(clt->pid, SIGUSR1);
+			clt->bits = 0;
+			clt->c = 0;
 			rm_clt(&g_list, clt->pid);
 			return ;
 		}
@@ -44,7 +46,6 @@ void	sig_handler(int signal, siginfo_t *info, void *context)
 {
 	t_cl		*clt;
 
-	ft_printf("\n>>>>> %d <<<<<", info->si_pid);
 	(void)context;
 	if (!g_list)
 		g_list = new_clt(info->si_pid);

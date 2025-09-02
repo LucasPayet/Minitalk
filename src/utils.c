@@ -72,8 +72,8 @@ int	strccat(char *dst, const char c)
 	int	len_dest;
 
 	len_dest = ft_strlen(dst);
-	dst[len_dest + 1] = c;
-	dst[len_dest + 2] = '\0';
+	dst[len_dest] = c;
+	dst[len_dest + 1] = '\0';
 	return (len_dest + 1);
 }
 

@@ -55,6 +55,7 @@ void	rm_clt(t_cl **head, int pid)
 			prev->next = next;
 			return ;
 		}
+		prev = curr;
 		curr = next;
 	}
 }
