@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:09:41 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/02 11:38:37 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/04 15:33:18 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	msg_cat(t_cl *clt)
 	int	len;
 
 	len = ft_strlen(clt->msg);
-	if (len >= clt->size - 1)
+	if (len == clt->size - 1)
 	{
 		if (!ft_realloc(clt->msg, clt->size + 100, clt->size))
 			return (0);

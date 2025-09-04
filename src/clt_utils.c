@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:30:13 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/02 11:42:59 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/04 15:26:27 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_cl	*new_clt(pid_t pid)
 
 	new = ft_calloc(sizeof(t_cl), 1);
 	new->pid = pid;
-	new->msg = ft_calloc(sizeof(char), 100);
-	new->size = 100;
+	new->msg = ft_calloc(sizeof(char), 101);
+	new->size = 101;
 	return (new);
 }
 
