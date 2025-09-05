@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 12:07:17 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/02 14:11:38 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/05 08:16:53 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	set_bit(int signal, t_cl *clt)
 		{
 			write(1, clt->msg, ft_strlen(clt->msg));
 			write(1, "\n", 1);
-			/*kill(clt->pid, SIGUSR1);
+			kill(clt->pid, SIGUSR1);
 			clt->bits = 0;
 			clt->c = 0;
 			rm_clt(&g_list, clt->pid);
-			return  ;*/
+			return ;
 		}
 		clt->bits = 0;
 		clt->c = 0;

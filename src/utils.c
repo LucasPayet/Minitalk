@@ -6,53 +6,12 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:09:41 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/04 15:33:18 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/05 08:05:58 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minitalk.h"
-/*
-t_cl	*new_clt(pid_t pid)
-{
-	t_cl	*new;
-
-	new = ft_calloc(sizeof(t_cl), 1);
-	new->pid = pid;
-	new->msg = ft_calloc(sizeof(char), 100);
-	new->size = 100;
-	return (new);
-}
-
-void	rm_clt(t_cl *head, int pid)
-{
-	t_cl	*prev;
-	t_cl	*next;
-
-	prev = head;
-	next = head->next;
-	if (curr->pid == pid)
-	{
-		free(head->msg);
-		free(head);
-		head = next;
-		return ;
-	}
-	curr = curr->next;
-	while (curr)
-	{
-		next = curr->next;
-		next = curr->next;
-		if (curr->pid == pid)
-		{
-			free(curr->msg);
-			free(curr);
-			prev->next = next;
-			return ;
-		}
-		curr = next;
-	}
-} */
 
 void	*ft_realloc(void *ptr, size_t new_size, int size)
 {
@@ -78,7 +37,7 @@ int	strccat(char *dst, const char c)
 
 int	msg_cat(t_cl *clt)
 {
-	int	len;
+	int		len;
 	char	*newp;
 
 	len = ft_strlen(clt->msg);

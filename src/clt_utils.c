@@ -6,7 +6,7 @@
 /*   By: lupayet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:30:13 by lupayet           #+#    #+#             */
-/*   Updated: 2025/09/04 15:26:27 by lupayet          ###   ########.fr       */
+/*   Updated: 2025/09/05 08:16:09 by lupayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,29 @@ void	free_clt(t_cl *clt)
 
 void	rm_clt(t_cl **head, int pid)
 {
-	t_cl	*curr;
-	t_cl	*prev;
-	t_cl	*next;
+	t_cl	*pos[3];
 
-	curr = *head;
-	prev = *head;
-	next = curr->next;
-	if (curr->pid == pid)
+	pos[0] = *head;
+	pos[1] = *head;
+	pos[2] = pos[0]->next;
+	if (pos[0]->pid == pid)
 	{
-		free_clt(curr);
-		*head = next;
+		free_clt(pos[0]);
+		*head = pos[2];
 		return ;
 	}
-	curr = curr->next;
-	while (curr)
+	pos[0] = pos[0]->next;
+	while (pos[0])
 	{
-		next = curr->next;
-		if (curr->pid == pid)
+		pos[2] = pos[0]->next;
+		if (pos[0]->pid == pid)
 		{
-			free_clt(curr);
-			prev->next = next;
+			free_clt(pos[0]);
+			pos[1]->next = pos[2];
 			return ;
 		}
-		prev = curr;
-		curr = next;
+		pos[1] = pos[0];
+		pos[0] = pos[2];
 	}
 }
+//pos[0, 1, 2] = curr, prev, next;
