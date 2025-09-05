@@ -30,11 +30,11 @@ void	set_bit(int signal, t_cl *clt)
 		{
 			write(1, clt->msg, ft_strlen(clt->msg));
 			write(1, "\n", 1);
-			kill(clt->pid, SIGUSR1);
+			/*kill(clt->pid, SIGUSR1);
 			clt->bits = 0;
 			clt->c = 0;
 			rm_clt(&g_list, clt->pid);
-			return ;
+			return  ;*/
 		}
 		clt->bits = 0;
 		clt->c = 0;
@@ -109,6 +109,6 @@ int	main(void)
 	ft_printf("%d\n", pid);
 	set_signal_action();
 	while (1)
-		continue ;
+		pause();
 	return (0);
 }

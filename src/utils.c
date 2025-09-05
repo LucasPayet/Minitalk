@@ -63,8 +63,7 @@ void	*ft_realloc(void *ptr, size_t new_size, int size)
 		return (NULL);
 	ft_memcpy(cp, ptr, size);
 	free(ptr);
-	ptr = cp;
-	return (ptr);
+	return (cp);
 }
 
 int	strccat(char *dst, const char c)
@@ -80,14 +79,16 @@ int	strccat(char *dst, const char c)
 int	msg_cat(t_cl *clt)
 {
 	int	len;
+	char	*newp;
 
 	len = ft_strlen(clt->msg);
 	if (len == clt->size - 1)
 	{
-		if (!ft_realloc(clt->msg, clt->size + 100, clt->size))
+		newp = ft_realloc(clt->msg, clt->size + 100, clt->size);
+		if (!clt->msg)
 			return (0);
-		else
-			clt->size += 100;
+		clt->msg = newp;
+		clt->size += 100;
 	}
 	strccat(clt->msg, clt->c);
 	return (1);
